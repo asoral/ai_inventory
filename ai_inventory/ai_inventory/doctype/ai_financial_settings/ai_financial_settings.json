@@ -1,16 +1,15 @@
 {
  "actions": [],
- "allow_rename": 0,
  "creation": "2025-08-02 18:41:47.928880",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
- "issingle": 1,
  "field_order": [
   "general_settings_section",
   "enable_financial_forecasting",
   "default_forecast_period",
   "auto_sync_enabled",
+  "auto_forecast_new_accounts",
   "column_break_4",
   "sync_frequency",
   "confidence_threshold",
@@ -50,58 +49,255 @@
   "cache_duration_hours"
  ],
  "fields": [
-  { "fieldname": "general_settings_section", "fieldtype": "Section Break", "label": "General Settings" },
-  { "fieldname": "enable_financial_forecasting", "fieldtype": "Check", "default": 1, "label": "Enable Financial Forecasting" },
-  { "fieldname": "default_forecast_period", "fieldtype": "Int", "default": 90, "label": "Default Forecast Period (Days)" },
-  { "fieldname": "auto_sync_enabled", "fieldtype": "Check", "default": 1, "label": "Auto Sync Enabled" },
-  { "fieldname": "column_break_4", "fieldtype": "Column Break" },
-  { "fieldname": "sync_frequency", "fieldtype": "Select", "default": "Daily", "label": "Sync Frequency", "options": "Hourly\nDaily\nWeekly" },
-  { "fieldname": "confidence_threshold", "fieldtype": "Percent", "default": 70, "label": "Confidence Threshold" },
-  { "fieldname": "alert_threshold_percentage", "fieldtype": "Percent", "default": 20, "label": "Alert Threshold Percentage" },
-  { "fieldname": "forecast_trigger_threshold", "fieldtype": "Currency", "default": 1000, "label": "Forecast Trigger Threshold", "description": "Minimum amount that triggers automatic forecast updates" },
-
-  { "fieldname": "model_settings_section", "fieldtype": "Section Break", "label": "Model Settings" },
-  { "fieldname": "default_prediction_model", "fieldtype": "Select", "default": "ARIMA", "label": "Default Prediction Model", "options": "ARIMA\nLSTM\nProphet\nLinear Regression\nRandom Forest\nEnsemble" },
-  { "fieldname": "seasonal_adjustment_enabled", "fieldtype": "Check", "default": 1, "label": "Seasonal Adjustment Enabled" },
-  { "fieldname": "external_data_integration", "fieldtype": "Check", "label": "External Data Integration" },
-  { "fieldname": "column_break_10", "fieldtype": "Column Break" },
-  { "fieldname": "model_retrain_frequency", "fieldtype": "Select", "default": "Monthly", "label": "Model Retrain Frequency", "options": "Weekly\nMonthly\nQuarterly\nManual" },
-  { "fieldname": "min_historical_data_points", "fieldtype": "Int", "default": 12, "label": "Min Historical Data Points" },
-  { "fieldname": "forecast_accuracy_target", "fieldtype": "Percent", "default": 85, "label": "Forecast Accuracy Target" },
-
-  { "fieldname": "integration_settings_section", "fieldtype": "Section Break", "label": "Integration Settings" },
-  { "fieldname": "inventory_integration_enabled", "fieldtype": "Check", "default": 1, "label": "Inventory Integration Enabled" },
-  { "fieldname": "auto_create_forecasts", "fieldtype": "Check", "default": 1, "label": "Auto Create Forecasts" },
-  { "fieldname": "sync_with_budget", "fieldtype": "Check", "label": "Sync with Budget" },
-  { "fieldname": "column_break_16", "fieldtype": "Column Break" },
-  { "fieldname": "cash_flow_integration", "fieldtype": "Check", "default": 1, "label": "Cash Flow Integration" },
-  { "fieldname": "receivables_integration", "fieldtype": "Check", "default": 1, "label": "Receivables Integration" },
-  { "fieldname": "payables_integration", "fieldtype": "Check", "default": 1, "label": "Payables Integration" },
-
-  { "fieldname": "notification_settings_section", "fieldtype": "Section Break", "label": "Notification Settings" },
-  { "fieldname": "email_alerts_enabled", "fieldtype": "Check", "default": 1, "label": "Email Alerts Enabled" },
-  { "fieldname": "alert_recipients", "fieldtype": "Long Text", "label": "Alert Recipients (Comma Separated)" },
-  { "fieldname": "critical_threshold", "fieldtype": "Currency", "label": "Critical Threshold Amount" },
-  { "fieldname": "column_break_22", "fieldtype": "Column Break" },
-  { "fieldname": "dashboard_refresh_frequency", "fieldtype": "Select", "default": "5 Minutes", "label": "Dashboard Refresh Frequency", "options": "1 Minute\n5 Minutes\n15 Minutes\n30 Minutes\n1 Hour" },
-  { "fieldname": "report_generation_time", "fieldtype": "Time", "default": "06:00:00", "label": "Daily Report Generation Time" },
-  { "fieldname": "background_job_enabled", "fieldtype": "Check", "default": 1, "label": "Background Job Enabled" },
-
-  { "fieldname": "advanced_settings_section", "fieldtype": "Section Break", "label": "Advanced Settings" },
-  { "fieldname": "debug_mode", "fieldtype": "Check", "label": "Debug Mode" },
-  { "fieldname": "log_level", "fieldtype": "Select", "default": "INFO", "label": "Log Level", "options": "DEBUG\nINFO\nWARNING\nERROR" },
-  { "fieldname": "data_retention_days", "fieldtype": "Int", "default": 365, "label": "Data Retention Days" },
-  { "fieldname": "column_break_28", "fieldtype": "Column Break" },
-  { "fieldname": "api_rate_limit", "fieldtype": "Int", "default": 1000, "label": "API Rate Limit (per hour)" },
-  { "fieldname": "max_concurrent_forecasts", "fieldtype": "Int", "default": 10, "label": "Max Concurrent Forecasts" },
-  { "fieldname": "cache_duration_hours", "fieldtype": "Int", "default": 24, "label": "Cache Duration (Hours)" }
+  {
+   "fieldname": "general_settings_section",
+   "fieldtype": "Section Break",
+   "label": "General Settings"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_financial_forecasting",
+   "fieldtype": "Check",
+   "label": "Enable Financial Forecasting"
+  },
+  {
+   "default": "90",
+   "fieldname": "default_forecast_period",
+   "fieldtype": "Int",
+   "label": "Default Forecast Period (Days)"
+  },
+  {
+   "default": "1",
+   "fieldname": "auto_sync_enabled",
+   "fieldtype": "Check",
+   "label": "Auto Sync Enabled"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Daily",
+   "fieldname": "sync_frequency",
+   "fieldtype": "Select",
+   "label": "Sync Frequency",
+   "options": "Hourly\nDaily\nWeekly"
+  },
+  {
+   "default": "70",
+   "fieldname": "confidence_threshold",
+   "fieldtype": "Percent",
+   "label": "Confidence Threshold"
+  },
+  {
+   "default": "20",
+   "fieldname": "alert_threshold_percentage",
+   "fieldtype": "Percent",
+   "label": "Alert Threshold Percentage"
+  },
+  {
+   "default": "1000",
+   "description": "Minimum amount that triggers automatic forecast updates",
+   "fieldname": "forecast_trigger_threshold",
+   "fieldtype": "Currency",
+   "label": "Forecast Trigger Threshold"
+  },
+  {
+   "fieldname": "model_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Model Settings"
+  },
+  {
+   "default": "ARIMA",
+   "fieldname": "default_prediction_model",
+   "fieldtype": "Select",
+   "label": "Default Prediction Model",
+   "options": "ARIMA\nLSTM\nProphet\nLinear Regression\nRandom Forest\nEnsemble"
+  },
+  {
+   "default": "1",
+   "fieldname": "seasonal_adjustment_enabled",
+   "fieldtype": "Check",
+   "label": "Seasonal Adjustment Enabled"
+  },
+  {
+   "default": "0",
+   "fieldname": "external_data_integration",
+   "fieldtype": "Check",
+   "label": "External Data Integration"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Monthly",
+   "fieldname": "model_retrain_frequency",
+   "fieldtype": "Select",
+   "label": "Model Retrain Frequency",
+   "options": "Weekly\nMonthly\nQuarterly\nManual"
+  },
+  {
+   "default": "12",
+   "fieldname": "min_historical_data_points",
+   "fieldtype": "Int",
+   "label": "Min Historical Data Points"
+  },
+  {
+   "default": "85",
+   "fieldname": "forecast_accuracy_target",
+   "fieldtype": "Percent",
+   "label": "Forecast Accuracy Target"
+  },
+  {
+   "fieldname": "integration_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Integration Settings"
+  },
+  {
+   "default": "1",
+   "fieldname": "inventory_integration_enabled",
+   "fieldtype": "Check",
+   "label": "Inventory Integration Enabled"
+  },
+  {
+   "default": "1",
+   "fieldname": "auto_create_forecasts",
+   "fieldtype": "Check",
+   "label": "Auto Create Forecasts"
+  },
+  {
+   "default": "0",
+   "fieldname": "sync_with_budget",
+   "fieldtype": "Check",
+   "label": "Sync with Budget"
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "cash_flow_integration",
+   "fieldtype": "Check",
+   "label": "Cash Flow Integration"
+  },
+  {
+   "default": "1",
+   "fieldname": "receivables_integration",
+   "fieldtype": "Check",
+   "label": "Receivables Integration"
+  },
+  {
+   "default": "1",
+   "fieldname": "payables_integration",
+   "fieldtype": "Check",
+   "label": "Payables Integration"
+  },
+  {
+   "fieldname": "notification_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Notification Settings"
+  },
+  {
+   "default": "1",
+   "fieldname": "email_alerts_enabled",
+   "fieldtype": "Check",
+   "label": "Email Alerts Enabled"
+  },
+  {
+   "fieldname": "alert_recipients",
+   "fieldtype": "Long Text",
+   "label": "Alert Recipients (Comma Separated)"
+  },
+  {
+   "fieldname": "critical_threshold",
+   "fieldtype": "Currency",
+   "label": "Critical Threshold Amount"
+  },
+  {
+   "fieldname": "column_break_22",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "5 Minutes",
+   "fieldname": "dashboard_refresh_frequency",
+   "fieldtype": "Select",
+   "label": "Dashboard Refresh Frequency",
+   "options": "1 Minute\n5 Minutes\n15 Minutes\n30 Minutes\n1 Hour"
+  },
+  {
+   "default": "06:00:00",
+   "fieldname": "report_generation_time",
+   "fieldtype": "Time",
+   "label": "Daily Report Generation Time"
+  },
+  {
+   "default": "1",
+   "fieldname": "background_job_enabled",
+   "fieldtype": "Check",
+   "label": "Background Job Enabled"
+  },
+  {
+   "fieldname": "advanced_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Advanced Settings"
+  },
+  {
+   "default": "0",
+   "fieldname": "debug_mode",
+   "fieldtype": "Check",
+   "label": "Debug Mode"
+  },
+  {
+   "default": "INFO",
+   "fieldname": "log_level",
+   "fieldtype": "Select",
+   "label": "Log Level",
+   "options": "DEBUG\nINFO\nWARNING\nERROR"
+  },
+  {
+   "default": "365",
+   "fieldname": "data_retention_days",
+   "fieldtype": "Int",
+   "label": "Data Retention Days"
+  },
+  {
+   "fieldname": "column_break_28",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1000",
+   "fieldname": "api_rate_limit",
+   "fieldtype": "Int",
+   "label": "API Rate Limit (per hour)"
+  },
+  {
+   "default": "10",
+   "fieldname": "max_concurrent_forecasts",
+   "fieldtype": "Int",
+   "label": "Max Concurrent Forecasts"
+  },
+  {
+   "default": "24",
+   "fieldname": "cache_duration_hours",
+   "fieldtype": "Int",
+   "label": "Cache Duration (Hours)"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_forecast_new_accounts",
+   "fieldtype": "Check",
+   "label": "Auto Forecast New Accounts"
+  }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "issingle": 1,
  "links": [],
- "modified": "2025-08-02 18:50:00.000000",
+ "modified": "2025-08-18 12:37:48.316467",
  "modified_by": "Administrator",
- "module": "AI Inventory",
+ "module": "Ai Inventory",
  "name": "AI Financial Settings",
  "owner": "Administrator",
  "permissions": [
@@ -109,21 +305,21 @@
    "create": 1,
    "delete": 1,
    "email": 1,
-   "export": 1,
    "print": 1,
    "read": 1,
-   "report": 1,
    "role": "System Manager",
    "share": 1,
    "write": 1
   },
   {
    "read": 1,
-   "write": 1,
-   "role": "AI Inventory Manager"
+   "role": "AI Inventory Manager",
+   "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }
